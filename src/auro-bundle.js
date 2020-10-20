@@ -6,32 +6,13 @@
 // If use litElement base class
 import { LitElement, html, css } from "lit-element";
 
-// If using auroElement base class
-// See instructions for importing auroElement base class https://git.io/JULq4
-// import { html, css } from "lit-element";
-// import AuroElement from '@alaskaairux/orion-web-core-style-sheets/dist/auroElement/auroElement';
-
 // Import touch detection lib
 import "focus-visible/dist/focus-visible.min.js";
 import styleCss from "./style-css.js";
 
-// See https://git.io/JJ6SJ for "How to document your components using JSDoc"
-/**
- * auro-bundle provides users a way to ...
- *
- * @attr {String} cssClass - Applies designated CSS class to DOM element.
- */
-
-// build the component class
 class AuroBundle extends LitElement {
-  // constructor() {
-  //   super();
-  // }
-
-  // function to define props used within the scope of this component
   static get properties() {
     return {
-      // ...super.properties,
       cssClass:   { type: String }
     };
   }
@@ -41,11 +22,6 @@ class AuroBundle extends LitElement {
       ${styleCss}
     `;
   }
-
-  // When using auroElement, use the following attribute and function when hiding content from screen readers.
-  // aria-hidden="${this.hideAudible(this.hiddenAudible)}"
-
-  // function that renders the HTML and CSS into  the scope of the component
   render() {
     return html`
       <div class=${this.cssClass}>
