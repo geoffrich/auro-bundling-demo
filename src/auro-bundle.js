@@ -5,6 +5,7 @@
 
 // If use litElement base class
 import { LitElement, html, css } from "lit-element";
+import { classMap } from 'lit-html/directives/class-map';
 
 // Import touch detection lib
 import "focus-visible/dist/focus-visible.min.js";
@@ -19,12 +20,19 @@ class AuroBundle extends LitElement {
 
   static get styles() {
     return css`
+      .red {
+        color: green;
+      }
       ${styleCss}
     `;
   }
   render() {
+    const classes = {
+      red: true
+    }
     return html`
       <div class=${this.cssClass}>
+        <p class="${classMap(classes)}">More content</p>
         <slot></slot>
       </div>
     `;
