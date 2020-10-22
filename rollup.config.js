@@ -1,17 +1,20 @@
-import resolve from '@rollup/plugin-node-resolve';
-import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
-import serve from 'rollup-plugin-serve';
-import analyze from 'rollup-plugin-analyzer';
 import alias from '@rollup/plugin-alias';
+import minifyHTML from 'rollup-plugin-minify-html-literals';
+import resolve from '@rollup/plugin-node-resolve';
+import serve from 'rollup-plugin-serve';
 
 const production = !process.env.ROLLUP_WATCH;
-const cdnPackages = ['lit-element', 'lit-html', 'focus-visible/dist/focus-visible.min.js'];
-const cdnPackageUrls = cdnPackages.map(pkg => `https://cdn.skypack.dev/${pkg}?min`);
-const aliasEntries = cdnPackages.map((pkg, idx) => ({ find: pkg, replacement: cdnPackageUrls[idx] }) );
+
+// remove built-in support for shady DOM for modern browsers
+const aliasConfig = {
+    entries: [{
+        find: 'lit-html/lib/shady-render.js',
+        replacement: 'node_modules/lit-html/lit-html.js'
+    }]
+};
 
 export default {
-    external: cdnPackageUrls,
     input: 'src/auro-bundle.js',
     output: {
         sourcemap: true,
@@ -19,13 +22,11 @@ export default {
         file: 'dist/auro-bundle__bundled.js'
     },
     plugins: [
-        alias({ entries: aliasEntries }),
+        alias(aliasConfig),
         resolve(),
-        !production && livereload('public'),
+        minifyHTML(),
+        terser(),
         !production && serve(),
-        production && terser(),
-        // analyze(),
-
     ],
     watch: {
         clearScreen: false
