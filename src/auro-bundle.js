@@ -20,7 +20,7 @@ class AuroBundle extends LitElement {
 
   static get styles() {
     return css`
-      .red {
+      .green {
         color: green;
       }
       ${styleCss}
@@ -28,7 +28,7 @@ class AuroBundle extends LitElement {
   }
   render() {
     const classes = {
-      red: true
+      green: true
     }
     return html`
       <div class=${this.cssClass}>
