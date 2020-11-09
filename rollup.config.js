@@ -8,6 +8,16 @@ import serve from 'rollup-plugin-serve';
 
 const production = !process.env.ROLLUP_WATCH;
 
+/*
+TODO:
+- handling multiple components?
+- handling nested components? (e.g. auro-button)
+- Should WC polyfills be bundled?
+- browserslist
+- dedupe
+- one config with output plugins? https://rollupjs.org/guide/en/#outputplugins
+*/
+
 // remove built-in support for shady DOM for modern browsers
 const aliasConfig = {
     entries: [{
@@ -32,7 +42,7 @@ const modernConfig = {
 };
 
 const legacyConfig = {
-    input: 'src/auro-bundle.js',
+    input: 'src/auro-bundle.es5.js',
     output: {
         format: 'iife',
         file: 'dist/auro-bundle__bundled.es5.js'

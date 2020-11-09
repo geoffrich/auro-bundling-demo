@@ -10,6 +10,7 @@ import { classMap } from 'lit-html/directives/class-map';
 // Import touch detection lib
 import "focus-visible/dist/focus-visible.min.js";
 import styleCss from "./style-css.js";
+import '@alaskaairux/auro-icon';
 
 class AuroBundle extends LitElement {
   static get properties() {
@@ -33,6 +34,7 @@ class AuroBundle extends LitElement {
     return html`
       <div class=${this.cssClass}>
         <p class="${classMap(classes)}">More content</p>
+        <auro-icon></auro-icon>
         <slot></slot>
       </div>
     `;
