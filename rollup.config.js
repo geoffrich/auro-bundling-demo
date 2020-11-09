@@ -8,16 +8,22 @@ import serve from 'rollup-plugin-serve';
 
 const production = !process.env.ROLLUP_WATCH;
 
-/*
-TODO:
-- handling multiple components?
-- browserslist
-- dedupe
-- one config with output plugins? https://rollupjs.org/guide/en/#outputplugins
-- do we need babel for modern build?
-- documentation
-*/
-
+const getSharedPlugins = (isLegacy) => [
+    resolve({
+        // in case of multiple lit-element versions (e.g. importing another auro component)
+        dedupe: ['lit-element', 'lit-html']
+    }),
+    commonjs(),
+    // skipPreflightCheck flag needed or else build fails
+    // see https://github.com/rollup/plugins/issues/381
+    babel({
+        babelHelpers: 'bundled',
+        envName: isLegacy ? 'legacy' : 'modern',
+        skipPreflightCheck: true
+    }),
+    minifyHTML(),
+    terser()
+]
 
 const modernConfig = {
     input: 'src/auro-bundle.js',
@@ -33,9 +39,7 @@ const modernConfig = {
                 replacement: 'node_modules/lit-html/lit-html.js'
             }]
         }),
-        resolve(),
-        minifyHTML(),
-        terser(),
+        ...getSharedPlugins(false),
         !production && serve({
             open: true,
             openPage: '/docs/'
@@ -49,21 +53,7 @@ const legacyConfig = {
         format: 'iife',
         file: 'dist/auro-bundle__bundled.es5.js'
     },
-
-    plugins: [
-        resolve(),
-        commonjs(),
-        // skipPreflightCheck flag needed or else build fails
-        // see https://github.com/rollup/plugins/issues/381
-        babel({
-            babelHelpers: 'bundled',
-            envName: 'legacy',
-            skipPreflightCheck: true
-        }),
-        minifyHTML(),
-        terser()
-    ]
+    plugins: getSharedPlugins(true)
 };
-
 
 export default [modernConfig, legacyConfig];

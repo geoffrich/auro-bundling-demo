@@ -85,11 +85,12 @@
     "yaml-lint": "^1.2.4"
   },
   "browserslist": [
-    "last 2 version",
-    "> 15% in US",
-    "not IE 10",
-    "not IE_Mob 10",
-    "not IE_Mob 11"
+    "last 2 Chrome versions",
+    "last 2 iOS major versions",
+    "ie 11",
+    "last 2 Firefox versions",
+    "last 2 Edge versions",
+    "last 2 Safari major versions"
   ],
   "scripts": {
     "build": "npm run ciBuild",

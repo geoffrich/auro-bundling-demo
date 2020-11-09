@@ -1,3 +1,7 @@
+const { browserslist: defaultBrowserslist } = require('./package.json');
+
+const modernBrowserslist = defaultBrowserslist.filter(browser => browser !== 'ie 11');
+
 const sharedPlugins = [
     '@babel/plugin-syntax-dynamic-import',
     [
@@ -11,16 +15,16 @@ const sharedPlugins = [
 module.exports = {
     exclude: ['node_modules/@babel/**', 'node_modules/core-js/**', 'node_modules/@webcomponents/webcomponentsjs/**'],    
     env: {
-        // TODO: do we need to transpile for modern build? Check size difference
         modern: {
+            // lit-element supports the last two versions of modern browsers, so we don't need to polyfill
+            exclude: ['node_modules/lit-element/**', 'node_modules/lit-html/**'],
             presets: [
                 [
                     '@babel/preset-env',
                     {
-                        targets: { esmodules: true },
+                        targets: modernBrowserslist.join(', '),
                         useBuiltIns: 'usage',
-                        corejs: 3,
-                        //debug: true
+                        corejs: 3
                     }
                 ]
             ],
@@ -31,10 +35,9 @@ module.exports = {
                 [
                     '@babel/preset-env',
                     {
-                        targets: '> 0.25%, not dead',
+                        targets: defaultBrowserslist.join(', '),
                         useBuiltIns: 'usage',
-                        corejs: 3,                        
-                        // debug: true
+                        corejs: 3               
                     }
                 ]
             ],
