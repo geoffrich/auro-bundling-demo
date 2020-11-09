@@ -1,9 +1,10 @@
 // Used for bundling for legacy browsers
 
-import 'core-js/es/symbol'; // not sure why this is needed, but it prevents "out of stack space" in IE11.
-import 'whatwg-fetch';
-// any other component specific polyfills
+// this needs to be imported before WC polyfills to prevent "Out of stack space" errors in IE
+import 'core-js/es/symbol'; 
 
-// TODO: good idea? Listen for WebComponentsReady?
+// component specific polyfills
+import 'whatwg-fetch'; // for auro-icon
+
 import '@webcomponents/webcomponentsjs/webcomponents-bundle'; 
 import './auro-bundle';

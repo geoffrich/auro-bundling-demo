@@ -11,20 +11,13 @@ const production = !process.env.ROLLUP_WATCH;
 /*
 TODO:
 - handling multiple components?
-- handling nested components? (e.g. auro-button)
-- Should WC polyfills be bundled?
 - browserslist
 - dedupe
 - one config with output plugins? https://rollupjs.org/guide/en/#outputplugins
+- do we need babel for modern build?
+- documentation
 */
 
-// remove built-in support for shady DOM for modern browsers
-const aliasConfig = {
-    entries: [{
-        find: 'lit-html/lib/shady-render.js',
-        replacement: 'node_modules/lit-html/lit-html.js'
-    }]
-};
 
 const modernConfig = {
     input: 'src/auro-bundle.js',
@@ -33,11 +26,20 @@ const modernConfig = {
         file: 'dist/auro-bundle__bundled.js'
     },
     plugins: [
-        alias(aliasConfig),
+        // remove shady DOM polyfill for modern browsers
+        alias({
+            entries: [{
+                find: 'lit-html/lib/shady-render.js',
+                replacement: 'node_modules/lit-html/lit-html.js'
+            }]
+        }),
         resolve(),
         minifyHTML(),
         terser(),
-        !production && serve(),
+        !production && serve({
+            open: true,
+            openPage: '/docs/'
+        }),
     ]
 };
 
@@ -47,12 +49,12 @@ const legacyConfig = {
         format: 'iife',
         file: 'dist/auro-bundle__bundled.es5.js'
     },
-    // TODO: open @rollup/plugin-babel issue
-    // skipPreflightCheck flag needed or else build fails
-    // see https://github.com/rollup/plugins/issues/381
+
     plugins: [
         resolve(),
         commonjs(),
+        // skipPreflightCheck flag needed or else build fails
+        // see https://github.com/rollup/plugins/issues/381
         babel({
             babelHelpers: 'bundled',
             envName: 'legacy',
@@ -64,5 +66,4 @@ const legacyConfig = {
 };
 
 
-// TODO: IE11 out of stack space error
 export default [modernConfig, legacyConfig];

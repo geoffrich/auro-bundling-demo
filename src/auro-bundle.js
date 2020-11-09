@@ -33,8 +33,8 @@ class AuroBundle extends LitElement {
     }
     return html`
       <div class=${this.cssClass}>
-        <p class="${classMap(classes)}">More content</p>
-        <auro-icon></auro-icon>
+        <p class="${classMap(classes)}">More content here</p>
+        <auro-icon category="interface" name="chevron-up"></auro-icon>
         <slot></slot>
       </div>
     `;
