@@ -48,7 +48,7 @@ const modernConfig = {
 };
 
 const legacyConfig = {
-    input: 'src/auro-bundle.es5.js',
+    input: 'src/es5.js',
     output: {
         format: 'iife',
         file: 'dist/auro-bundle__bundled.es5.js'
